@@ -124,8 +124,8 @@ public class RNNodeService extends Service {
                 String.format("%s/test.js", dataDir)
         };
         try {
-            Process process = (new ProcessBuilder(cmd)).redirectErrorStream(true).start();
-            _thread = new RNNodeThread(process);
+            ProcessBuilder pb = (new ProcessBuilder(cmd)).redirectErrorStream(true);
+            _thread = new RNNodeThread(pb);
             _thread.start();
             Log.v(TAG, "RNNodeThread started.");
         } catch (Exception e) {

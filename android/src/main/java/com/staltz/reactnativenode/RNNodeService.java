@@ -39,6 +39,7 @@ public class RNNodeService extends Service {
         String dataDir = this.getApplicationInfo().dataDir;
         prepareNode(this, dataDir);
         prepareEntryFileTemporaryCrap(this, dataDir);
+        prepareOtherFileTemporaryCrap(this, dataDir);
     }
 
     public void prepareNode(Context context, String dataDir) {
@@ -89,11 +90,35 @@ public class RNNodeService extends Service {
         }
     }
 
+    public void prepareOtherFileTemporaryCrap(Context context, String dataDir) {
+        InputStream fileContents = null;
+        try {
+            fileContents = context.getResources().openRawResource(R.raw.otherjs);
+            String filenameInDataDir = String.format("%s/other.js", dataDir);
+            File file = new File(filenameInDataDir);
+            if (file.exists()) {
+                return;
+            }
+            file.createNewFile();
+            InputStreamReader reader = new InputStreamReader(fileContents);
+            FileOutputStream writer = new FileOutputStream(file);
+            byte[] binary = new byte[(int)(fileContents.available())];
+            fileContents.read(binary);
+            writer.write(binary);
+            writer.flush();
+            writer.close();
+            file.setExecutable(true, true);
+            fileContents.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Cannot create entry file \"other.js\"");
+        }
+    }
+
     public void startNode(String dataDir) {
         if (_thread != null) {
             return;
         }
-        Log.d(TAG, "Will start the Node.js process now...");
+        Log.v(TAG, "Will start RNNodeThread now...");
         String[] cmd = new String[] {
                 String.format("%s/node", dataDir),
                 String.format("%s/test.js", dataDir)
@@ -102,11 +127,10 @@ public class RNNodeService extends Service {
             Process process = (new ProcessBuilder(cmd)).redirectErrorStream(true).start();
             _thread = new RNNodeThread(process);
             _thread.start();
+            Log.v(TAG, "RNNodeThread started.");
         } catch (Exception e) {
             Log.e(TAG, "Cannot start \"node\"", e);
-            return;
         }
-        Log.d(TAG, "Node.js process started.");
     }
 
     @Override

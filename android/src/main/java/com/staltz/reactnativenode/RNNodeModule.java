@@ -27,7 +27,7 @@ public final class RNNodeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void start() {
-        Log.d(TAG, "RNNode launching an intent for RNNodeService...");
+        Log.d(TAG, "Launching an intent for RNNodeService...");
         Intent intent = new Intent(_reactContext, RNNodeService.class);
         _reactContext.startService(intent);
     }

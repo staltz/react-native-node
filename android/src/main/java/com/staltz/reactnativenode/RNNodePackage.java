@@ -11,10 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 public final class RNNodePackage implements ReactPackage {
-
     @Override
-    public List<NativeModule> createNativeModules(
-            ReactApplicationContext reactContext) {
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<NativeModule>();
 
         modules.add(new RNNodeModule(reactContext));
@@ -28,8 +26,7 @@ public final class RNNodePackage implements ReactPackage {
     }
 
     @Override
-    public List<ViewManager> createViewManagers(
-            ReactApplicationContext reactContext) {
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Collections.emptyList();
     }
 }

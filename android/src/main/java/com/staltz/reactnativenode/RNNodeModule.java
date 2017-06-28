@@ -9,8 +9,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 /**
- * The NativeModule acting as a JS API layer for react-native-node.
- */
+* The NativeModule acting as a JS API layer for react-native-node.
+*/
 public final class RNNodeModule extends ReactContextBaseJavaModule {
     private static final String TAG = "RNNode";
     private ReactContext _reactContext;

@@ -1,7 +1,13 @@
-var { NativeModules } = require("react-native");
-var RNNode = NativeModules.RNNode;
+const { NativeModules } = require("react-native");
 
-exports.start = function start() {
-  RNNode.start();
+export const RNNode = {
+  start() {
+    NativeModules.RNNode.start();
+  },
+
+  stop() {
+    // TODO
+  }
 };
 
+export default RNNode;

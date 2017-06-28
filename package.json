@@ -1,0 +1,35 @@
+{
+  "name": "react-native-node",
+  "version": "1.0.0",
+  "description": "Run a separate Node.js process behind a React Native app",
+  "author": {
+    "name": "Andre Staltz",
+    "url": "staltz.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/staltz/react-native-node"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react-native",
+    "reactnative",
+    "node",
+    "nodejs",
+    "thread",
+    "process",
+    "background",
+    "service"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "start": "exit 1"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.40.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^4.1.6",
+    "eslint-plugin-react": "^3.11.3"
+  }
+}

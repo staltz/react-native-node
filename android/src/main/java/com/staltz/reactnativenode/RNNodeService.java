@@ -6,13 +6,28 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.utils.IOUtils;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RNNodeService extends Service {
     private static final String TAG = "RNNodeService";
+    private static final String RAW_BUNDLE_NAME = "rnnodebundle";
+    private static final String APP_NAME = "rnnodeapp";
+    private static final String DEFAULT_APP_ENTRY = "index.js";
 
     private RNNodeThread _thread;
 
@@ -38,8 +53,12 @@ public class RNNodeService extends Service {
         Log.v(TAG, "Create and prepare");
         String dataDir = this.getApplicationInfo().dataDir;
         prepareNode(this, dataDir);
-        prepareEntryFileTemporaryCrap(this, dataDir);
-        prepareOtherFileTemporaryCrap(this, dataDir);
+        File bundleTar = prepareBundle(this, dataDir);
+        try {
+            unTar(bundleTar, new File(dataDir + "/" + APP_NAME));
+        } catch (Exception e) {
+            Log.e(TAG, "Cannot uncompress the background app bundle", e);
+        }
     }
 
     public void prepareNode(Context context, String dataDir) {
@@ -66,52 +85,63 @@ public class RNNodeService extends Service {
         }
     }
 
-    public void prepareEntryFileTemporaryCrap(Context context, String dataDir) {
-        InputStream fileContents = null;
+    public File prepareBundle(Context context, String dataDir) {
+        InputStream bundleBinary = null;
         try {
-            fileContents = context.getResources().openRawResource(R.raw.testjs);
-            String filenameInDataDir = String.format("%s/test.js", dataDir);
-            File file = new File(filenameInDataDir);
-            if (file.exists()) {
-                return;
+            int rawId = context.getResources().getIdentifier(RAW_BUNDLE_NAME, "raw", context.getPackageName());
+            bundleBinary = context.getResources().openRawResource(rawId);
+            String tarFilename = String.format("%s/%s.tgz", dataDir, APP_NAME);
+            File tarFile = new File(tarFilename);
+            if (tarFile.exists()) {
+                return tarFile;
             }
-            file.createNewFile();
-            InputStreamReader reader = new InputStreamReader(fileContents);
-            FileOutputStream writer = new FileOutputStream(file);
-            byte[] binary = new byte[(int)(fileContents.available())];
-            fileContents.read(binary);
+            tarFile.createNewFile();
+            InputStreamReader reader = new InputStreamReader(bundleBinary);
+            FileOutputStream writer = new FileOutputStream(tarFile);
+            byte[] binary = new byte[(int)(bundleBinary.available())];
+            bundleBinary.read(binary);
             writer.write(binary);
             writer.flush();
             writer.close();
-            file.setExecutable(true, true);
-            fileContents.close();
+            bundleBinary.close();
+            return tarFile;
         } catch (Exception e) {
-            Log.e(TAG, "Cannot create entry file \"test.js\"");
+            Log.e(TAG, "Cannot prepare tar file for the bundle. " +
+                    "Are you sure you ran \"react-native-node insert\"?",
+                    e
+            );
         }
+        return null;
     }
 
-    public void prepareOtherFileTemporaryCrap(Context context, String dataDir) {
-        InputStream fileContents = null;
-        try {
-            fileContents = context.getResources().openRawResource(R.raw.otherjs);
-            String filenameInDataDir = String.format("%s/other.js", dataDir);
-            File file = new File(filenameInDataDir);
-            if (file.exists()) {
-                return;
-            }
-            file.createNewFile();
-            InputStreamReader reader = new InputStreamReader(fileContents);
-            FileOutputStream writer = new FileOutputStream(file);
-            byte[] binary = new byte[(int)(fileContents.available())];
-            fileContents.read(binary);
-            writer.write(binary);
-            writer.flush();
-            writer.close();
-            file.setExecutable(true, true);
-            fileContents.close();
-        } catch (Exception e) {
-            Log.e(TAG, "Cannot create entry file \"other.js\"");
+    private static List<File> unTar(final File inputFile, final File outputDir) throws FileNotFoundException, IOException, ArchiveException {
+        Log.i(TAG, String.format("Untaring %s to dir %s", inputFile.getAbsolutePath(), outputDir.getAbsolutePath()));
+
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
         }
+        final List<File> untaredFiles = new LinkedList<File>();
+        final InputStream is = new FileInputStream(inputFile);
+        final TarArchiveInputStream debInputStream = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+        TarArchiveEntry entry = null;
+        while ((entry = (TarArchiveEntry)debInputStream.getNextEntry()) != null) {
+            final File outputFile = new File(outputDir, entry.getName());
+            if (entry.isDirectory()) {
+                if (!outputFile.exists()) {
+                    if (!outputFile.mkdirs()) {
+                        throw new IllegalStateException(String.format("Couldn't create directory %s.", outputFile.getAbsolutePath()));
+                    }
+                }
+            } else {
+                final OutputStream outputFileStream = new FileOutputStream(outputFile);
+                IOUtils.copy(debInputStream, outputFileStream);
+                outputFileStream.close();
+            }
+            untaredFiles.add(outputFile);
+        }
+        debInputStream.close();
+
+        return untaredFiles;
     }
 
     public void startNode(String dataDir) {
@@ -121,7 +151,7 @@ public class RNNodeService extends Service {
         Log.v(TAG, "Will start RNNodeThread now...");
         String[] cmd = new String[] {
                 String.format("%s/node", dataDir),
-                String.format("%s/test.js", dataDir)
+                String.format("%s/%s/%s", dataDir, APP_NAME, DEFAULT_APP_ENTRY)
         };
         try {
             ProcessBuilder pb = (new ProcessBuilder(cmd)).redirectErrorStream(true);

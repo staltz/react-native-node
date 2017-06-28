@@ -32,6 +32,9 @@
     "react-native": ">=0.40.0"
   },
   "dependencies": {
+    "mkdirp": "^0.5.1",
+    "path": "^0.12.7",
+    "tar": "^3.1.5",
     "yargs": "^8.0.2"
   },
   "devDependencies": {

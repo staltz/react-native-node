@@ -22,11 +22,17 @@
     "service"
   ],
   "main": "index.js",
+  "bin": {
+    "react-native-node": "./bin.js"
+  },
   "scripts": {
     "start": "exit 1"
   },
   "peerDependencies": {
     "react-native": ">=0.40.0"
+  },
+  "dependencies": {
+    "yargs": "^8.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.6",

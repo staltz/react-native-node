@@ -3,9 +3,11 @@ const path = require("path");
 const tar = require("tar");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
+const cheerio = require("cheerio");
 
 const BUNDLE_TAR = "rnnodebundle.tgz";
 const BUNDLE_NO_EXT = "rnnodebundle";
+const SERVICE_CLASSNAME = "com.staltz.reactnativenode.RNNodeService";
 
 function assertCanInsert(workingDir, sourcePath) {
   const androidProjectPath = path.resolve(workingDir, "./android/app");
@@ -44,11 +46,32 @@ function insertOnly(workingDir) {
   console.log("\t\tdone");
 }
 
+function updateManifest(workingDir) {
+  console.log("Updating AndroidManifest.xml in mobile app project ...");
+  const absoluteManifestPath = path.resolve(
+    workingDir,
+    "./android/app/src/main/AndroidManifest.xml"
+  );
+  const xmlBefore = fs.readFileSync(absoluteManifestPath, "utf-8");
+  const $ = cheerio.load(xmlBefore, { xmlMode: true });
+  const serviceElems = $("manifest application service").filter(
+    (i, elem) => elem.attribs["android:name"] === SERVICE_CLASSNAME
+  );
+  if (serviceElems.length === 0) {
+    $("manifest application").append(
+      `<service android:name="${SERVICE_CLASSNAME}"/>`
+    );
+  }
+  fs.writeFileSync(absoluteManifestPath, $.xml(), "utf-8");
+  console.log("\tdone");
+}
+
 function insert(path) {
   const workingDir = process.cwd();
   assertCanInsert(workingDir, path);
   bundle(workingDir, path);
   insertOnly(workingDir);
+  updateManifest(workingDir);
 }
 
 const argv = require("yargs")

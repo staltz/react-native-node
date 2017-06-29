@@ -32,6 +32,7 @@
     "react-native": ">=0.40.0"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
     "tar": "^3.1.5",

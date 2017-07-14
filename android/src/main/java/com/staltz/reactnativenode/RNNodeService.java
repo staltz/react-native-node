@@ -154,7 +154,9 @@ public class RNNodeService extends Service {
                 String.format("%s/%s/%s", dataDir, APP_NAME, DEFAULT_APP_ENTRY)
         };
         try {
-            ProcessBuilder pb = (new ProcessBuilder(cmd)).redirectErrorStream(true);
+            ProcessBuilder pb = (new ProcessBuilder(cmd))
+                    .directory(new File(this.getApplicationInfo().dataDir))
+                    .redirectErrorStream(true);
             _thread = new RNNodeThread(pb);
             _thread.start();
             Log.v(TAG, "RNNodeThread started.");

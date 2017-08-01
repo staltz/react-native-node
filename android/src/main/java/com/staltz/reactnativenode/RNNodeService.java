@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class RNNodeService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
-            String[] args = intent.getStringArrayExtra("args");
+            ArrayList<String> args = intent.getStringArrayListExtra("args");
             startNode(this.getApplicationInfo().dataDir, args);
         }
         // running until explicitly stop
@@ -146,24 +147,17 @@ public class RNNodeService extends Service {
         return untaredFiles;
     }
 
-    public static String[] concat(String[] a, String[] b) {
-        int aLen = a.length;
-        int bLen = b.length;
-        String[] c = new String[aLen+bLen];
-        System.arraycopy(a, 0, c, 0, aLen);
-        System.arraycopy(b, 0, c, aLen, bLen);
-        return c;
-    }
-
-    public void startNode(String dataDir, String[] args) {
+    public void startNode(String dataDir, ArrayList<String> args) {
         if (_thread != null) {
             return;
         }
         Log.v(TAG, "Will start RNNodeThread now...");
-        String[] cmd = concat(new String[] {
-                String.format("%s/node", dataDir),
-                String.format("%s/%s/%s", dataDir, APP_NAME, DEFAULT_APP_ENTRY)
-        }, args);
+        ArrayList<String> cmd = new ArrayList<>();
+        cmd.add(String.format("%s/node", dataDir));
+        cmd.add(String.format("%s/%s/%s", dataDir, APP_NAME, DEFAULT_APP_ENTRY));
+        if (args != null) {
+            cmd.addAll(args);
+        }
         try {
             ProcessBuilder pb = (new ProcessBuilder(cmd))
                     .directory(new File(this.getApplicationInfo().dataDir))

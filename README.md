@@ -70,3 +70,22 @@ If you want to bundle and insert the background app always before building the m
 ### Tip 2
 
 You can reduce the size of the bundle file `rnnodebundle` by using a tool like [noderify](https://www.npmjs.com/package/noderify) to create a single js file.
+
+## FAQ
+
+#### How is this possible?
+
+Node.js v7.1.0 (with V8, not JavaScriptCore) was compiled to a binary `bin_node_v710` following the approach used by ["NodeBase"](https://github.com/dna2github/NodeBase). This binary is prebuilt and included in this library. If you are concerned about security, you shouldn't use the prebuilt binary, but compile it yourself.
+
+#### What about iOS support?
+
+We can't run V8 Node.js on iOS since that violates Apple's policy around Just-In-Time compilation, but ChakraCore Node.js can run on iOS. We are depending on [this project by Janea Systems](http://www.janeasystems.com/blog/node-js-meets-ios/) to open source their methods and include a proper open source license.
+
+#### Does it support packages with native bindings?
+
+Yes, in theory, but that's the job of individual libraries having native bindings for android. Most packages don't have. I believe sodium-native has. Hint: if you want to compile the native part of packages, I recommend not trying to cross-compile. Instead, install `termux` on an Android device and compile from the phone directly.
+
+#### Why did you build this?
+
+I am bringing the [Scuttlebutt](https://www.scuttlebutt.nz/) ecosystem to mobile, and I built the package [react-native-scuttlebot](https://github.com/ssbc/react-native-scuttlebot) which uses this tool as dependency. These are in turn used by the mobile app project [mmmmm](https://github.com/staltz/mmmmm-mobile).
+

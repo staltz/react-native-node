@@ -25,9 +25,6 @@
   "bin": {
     "react-native-node": "./bin.js"
   },
-  "scripts": {
-    "start": "exit 1"
-  },
   "peerDependencies": {
     "react-native": ">=0.40.0"
   },

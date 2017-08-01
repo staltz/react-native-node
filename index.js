@@ -6,7 +6,7 @@ export const RNNode = {
   },
 
   stop() {
-    // TODO
+    NativeModules.RNNode.stop();
   }
 };
 

@@ -6,6 +6,8 @@ Using this package you can: run `http` servers in Android, use Node streams, int
 
 (only Android supported, for now. iOS support may come if [this project](http://www.janeasystems.com/blog/node-js-meets-ios/) evolves)
 
+PS: check also [node-on-mobile](https://github.com/node-on-mobile/node-on-android) if you're not using React Native.
+
 ## Install
 
 ```

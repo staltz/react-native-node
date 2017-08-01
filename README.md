@@ -4,9 +4,8 @@
 
 Using this package you can: run `http` servers in Android, use Node streams, interface with the filesystem, off load some heavy processing out of the JS thread in React Native, and more! Running the real Node.js in Android, you can do everything that Node.js on desktop can.
 
-(only Android supported, for now. iOS support may come if [this project](http://www.janeasystems.com/blog/node-js-meets-ios/) evolves)
-
-PS: check also [node-on-mobile](https://github.com/node-on-mobile/node-on-android) if you're not using React Native.
+- (only Android supported, for now. iOS support may come if [this project](http://www.janeasystems.com/blog/node-js-meets-ios/) evolves)
+- (check also [node-on-mobile](https://github.com/node-on-mobile/node-on-android) if you're not using React Native)
 
 ## Install
 

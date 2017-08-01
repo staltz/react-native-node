@@ -57,7 +57,7 @@ npm install --save react-native-node
 react-native run-android
 ```
 
-### Tip
+### Tip 1
 
 If you want to bundle and insert the background app always before building the mobile app, make a `prestart` package.json script (assuming you use the `start` script):
 
@@ -66,3 +66,7 @@ If you want to bundle and insert the background app always before building the m
 +  "prestart: "react-native-node insert ./background",
    "start": "node node_modules/react-native/local-cli/cli.js start",
 ```
+
+### Tip 2
+
+You can reduce the size of the bundle file `rnnodebundle` by using a tool like [noderify](https://www.npmjs.com/package/noderify) to create a single js file.

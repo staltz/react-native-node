@@ -79,7 +79,7 @@ Node.js v7.1.0 (with V8, not JavaScriptCore) was compiled to a binary `bin_node_
 
 #### What about iOS support?
 
-We can't run V8 Node.js on iOS since that violates Apple's policy around Just-In-Time compilation, but ChakraCore Node.js can run on iOS. We are depending on [this project by Janea Systems](http://www.janeasystems.com/blog/node-js-meets-ios/) to open source their methods and include a proper open source license.
+We can't run V8 Node.js on iOS since that violates Apple's policy around Just-In-Time compilation, but ChakraCore Node.js can run on iOS. We are depending on [this project by Janea Systems](http://www.janeasystems.com/blog/node-js-meets-ios/) to open source their methods and include a proper open source license. Also it exists the possibility of using [jxcore](https://github.com/jxcore/jxcore) which I believe is more permissive.
 
 #### Does it support packages with native bindings?
 

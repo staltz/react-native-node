@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class RNNodeService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
-            startNode(this.getApplicationInfo().dataDir);
+            String[] args = intent.getStringArrayExtra("args");
+            startNode(this.getApplicationInfo().dataDir, args);
         }
         // running until explicitly stop
         return START_STICKY;
@@ -144,15 +146,24 @@ public class RNNodeService extends Service {
         return untaredFiles;
     }
 
-    public void startNode(String dataDir) {
+    public static String[] concat(String[] a, String[] b) {
+        int aLen = a.length;
+        int bLen = b.length;
+        String[] c = new String[aLen+bLen];
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+        return c;
+    }
+
+    public void startNode(String dataDir, String[] args) {
         if (_thread != null) {
             return;
         }
         Log.v(TAG, "Will start RNNodeThread now...");
-        String[] cmd = new String[] {
+        String[] cmd = concat(new String[] {
                 String.format("%s/node", dataDir),
                 String.format("%s/%s/%s", dataDir, APP_NAME, DEFAULT_APP_ENTRY)
-        };
+        }, args);
         try {
             ProcessBuilder pb = (new ProcessBuilder(cmd))
                     .directory(new File(this.getApplicationInfo().dataDir))

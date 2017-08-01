@@ -1,8 +1,8 @@
 const { NativeModules } = require("react-native");
 
 export const RNNode = {
-  start() {
-    NativeModules.RNNode.start();
+  start(args) {
+    NativeModules.RNNode.start(Array.isArray(args) ? args : []);
   },
 
   stop() {

@@ -63,7 +63,7 @@ If you want to bundle and insert the background app always before building the m
 
 ```diff
  "scripts": {
-+  "prestart: "react-native-node insert ./background",
++  "prestart": "react-native-node insert ./background",
    "start": "node node_modules/react-native/local-cli/cli.js start",
 ```
 

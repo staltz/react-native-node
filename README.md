@@ -17,6 +17,10 @@ Using this package you can: run `http` servers in Android, use Node streams, int
 npm install --save react-native-node
 ```
 
+```
+react-native link react-native-node
+```
+
 ## Usage
 
 1. Develop the background Node.js project under some directory

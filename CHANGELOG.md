@@ -1,3 +1,9 @@
+# 2.1.0
+
+## Feature / bug fix
+
+- Displays the stdout and stderr of your node.js process in the Android logcat, with the tag `nodejs`, as "verbose"
+
 # 2.0.0
 
 ## Breaking changes

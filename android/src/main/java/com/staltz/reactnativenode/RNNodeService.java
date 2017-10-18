@@ -160,8 +160,7 @@ public class RNNodeService extends Service {
         }
         try {
             ProcessBuilder pb = (new ProcessBuilder(cmd))
-                    .directory(new File(this.getApplicationInfo().dataDir))
-                    .redirectErrorStream(true);
+                    .directory(new File(this.getApplicationInfo().dataDir));
             _thread = new RNNodeThread(pb);
             _thread.start();
             Log.v(TAG, "RNNodeThread started.");

@@ -1,3 +1,9 @@
+# 3.0.0
+
+## Breaking change
+
+The Android background Service now uses the stickiness level `START_NOT_STICKY` which makes more sense by default. In future versions we should enable choosing the stickiness level from the JavaScript API.
+
 # 2.1.0
 
 ## Feature / bug fix

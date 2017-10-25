@@ -48,7 +48,7 @@ public class RNNodeService extends Service {
             startNode(this.getApplicationInfo().dataDir, args);
         }
         // running until explicitly stop
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

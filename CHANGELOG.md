@@ -1,3 +1,7 @@
+# 3.1.0
+
+- Support `TMPDIR` pointing to an actual directory
+
 # 3.0.0
 
 ## Breaking change

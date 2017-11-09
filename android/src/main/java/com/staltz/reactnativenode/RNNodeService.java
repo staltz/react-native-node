@@ -161,9 +161,10 @@ public class RNNodeService extends Service {
         }
         try {
             ProcessBuilder pb = (new ProcessBuilder(cmd))
-                    .directory(new File(this.getApplicationInfo().dataDir));
+                    .directory(new File(dataDir));
             Map<String, String> env = pb.environment();
             env.put("TMPDIR", getCacheDir().getAbsolutePath());
+            env.put("HOME", dataDir);
             _thread = new RNNodeThread(pb);
             _thread.start();
             Log.v(TAG, "RNNodeThread started.");

@@ -1,3 +1,7 @@
+# 3.2.0
+
+- Support HOME env var pointing to the app's data directory
+
 # 3.1.1
 
 - Support `TMPDIR` pointing to an actual directory

@@ -165,6 +165,7 @@ public class RNNodeService extends Service {
             Map<String, String> env = pb.environment();
             env.put("TMPDIR", getCacheDir().getAbsolutePath());
             env.put("HOME", dataDir);
+            env.put("LD_LIBRARY_PATH", this.getApplicationInfo().nativeLibraryDir);
             _thread = new RNNodeThread(pb);
             _thread.start();
             Log.v(TAG, "RNNodeThread started.");

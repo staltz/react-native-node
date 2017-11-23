@@ -1,3 +1,10 @@
+# 3.3.0
+
+* Support `LD_LIBRARY_PATH` env var pointing to the app's library directory
+  (`getApplicationInfo().nativeLibraryDir)`). The app library directory is
+  populated with contents from your project's `android/app/src/main/jniLibs`
+  directory.
+
 # 3.2.0
 
 - Support HOME env var pointing to the app's data directory

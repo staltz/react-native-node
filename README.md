@@ -75,6 +75,19 @@ If you want to bundle and insert the background app always before building the m
 
 You can reduce the size of the bundle file `rnnodebundle` by using a tool like [noderify](https://www.npmjs.com/package/noderify) to create a single js file.
 
+### Tip 3
+
+To debug, use `adb logcat` with the `nodejs` tag. For example with react:
+
+```
+adb logcat *:S nodejs:V ReactNative:V ReactNativeJS:V
+```
+
+These additional logging tags are used by `react-native-node`:
+- `RNNodeThread` - will tell you if your process has started/terminated/errored
+- `RNNodeService` - debug tar/untar, node binary preparation etc.
+- `RNNode`
+
 ## FAQ
 
 #### How is this possible?

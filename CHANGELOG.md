@@ -1,3 +1,7 @@
+# 3.3.1
+
+* Fix issue where tar file is updated and should be decompressed. Previously, the updated tar was never decompressed if it already existed. Now, the updated raw resource tar will be decompressed every time its byte size is different to existing tar file.
+
 # 3.3.0
 
 * Support `LD_LIBRARY_PATH` env var pointing to the app's library directory

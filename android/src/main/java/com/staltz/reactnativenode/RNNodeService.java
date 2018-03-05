@@ -58,6 +58,10 @@ public class RNNodeService extends Service {
         String dataDir = this.getApplicationInfo().dataDir;
         prepareNode(this, dataDir);
         File bundleTar = prepareBundle(this, dataDir);
+        if (bundleTar == null) {
+            Log.i(TAG, "Skipping untaring of the bundle, because it would be redundant");
+            return;
+        }
         try {
             unTar(bundleTar, new File(dataDir + "/" + APP_NAME));
         } catch (Exception e) {
@@ -96,12 +100,12 @@ public class RNNodeService extends Service {
             bundleBinary = context.getResources().openRawResource(rawId);
             String tarFilename = String.format("%s/%s.tgz", dataDir, APP_NAME);
             File tarFile = new File(tarFilename);
-            if (tarFile.exists()) {
-                return tarFile;
+            if (tarFile.exists() && tarFile.length() == bundleBinary.available()) {
+                return null;
             }
             tarFile.createNewFile();
             InputStreamReader reader = new InputStreamReader(bundleBinary);
-            FileOutputStream writer = new FileOutputStream(tarFile);
+            FileOutputStream writer = new FileOutputStream(tarFile, false);
             byte[] binary = new byte[(int)(bundleBinary.available())];
             bundleBinary.read(binary);
             writer.write(binary);

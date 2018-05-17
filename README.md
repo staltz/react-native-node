@@ -2,14 +2,13 @@
 
 *Run a **real** Node.js process in the background, behind a React Native app.*
 
+**DEPRECATED. Please use [Node.js Mobile](https://code.janeasystems.com/nodejs-mobile/) by Janea Systems instead.** It has the same purpose as this library, but is more updated, and supports iOS. This library still works as documented, but I'm not committed to maintaining it anymore.
+
+----------
+
 Using this package you can: run `http` servers in Android, use Node streams, interface with the filesystem, off load some heavy processing out of the JS thread in React Native, and more! Running the real Node.js in Android, you can do everything that Node.js on desktop can.
 
-- (only Android supported, for now. iOS support may come if [this project](http://www.janeasystems.com/blog/node-js-meets-ios/) evolves)
-- (check also [node-on-mobile](https://github.com/node-on-mobile/node-on-android) if you're not using React Native)
-
 [Example app](./example)
-
-![screenshot.png](./screenshot.png)
 
 ## Install
 
